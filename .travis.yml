@@ -1,0 +1,35 @@
+language: python
+
+sudo: false
+
+notifications:
+    email: true
+    on_success: never
+    on_failure: always
+
+env:
+    matrix:
+        - MOZ_HEADLESS=1
+
+global:
+    -   secure: e3uU8toS9U2RhXbbIpVCuQbuxh4pvwqJ9RyHN3RdlmBlpyrRClPmpIQMr3VRZ0mJjZClWqok/0lYDWbU5Anyl2VISFv80iB57RLNtVjLdjegQ0JjZnlMbKwXo2rGfZHm77KOiJYwqKgpszTnDbs/P9qWRYG77MoNd4eTEBWDuzRepw+9erJDswb0CwkvQfZ0TM461uAPenAKejfND7TW4GwE9jVg3btqG0pdjyXr0MWQS2fk1O04Z3qiEzrcMfq5U6g3y75pTiQkc3I+I23+/ppgLc7yRyIhlfSMQgYe84Gx8tSCSUj545RRdVfTnNdhlLfqYV4x/BtLo2jq4MKkqGIDUITcrQjAkFHbfmzR5MjDDUT4Zu3lgULwodhDA10PUc3ogy4G/B8mZIzcDrEACkwX8sHN0Eq2ANEhjgDQ1cf0EpzPQ1QWkL++7tg3mwS+1bzu/RAW4rveVM1ZLnhJ1V2NU9F1X/ZY6RdbKHLj7tLrBzmZG2eQKMdhbr9B7vaAjLGBVkbAoRQrtefzj5YximhNmzpZ/T4KgyNYp24CcGpSZpXj1BJxMEvwrcSoqtpvC2K/ZYX5EaK+JyWbTk4sdl4gLKVm5EHFcL4WNn+fTs/ZotXQAc4GVom3o7YgVmkFaQzx7c5c9FT1PqSPxPupzntSyp6Xrgd63fDIdCYYJD0=
+    -   secure: hVtyH+MidoRp2nfbKT3Wwoe3bRkmBq+W3I1CK01xIfzijUbweE//tzl4KxzoXXdPJGDrTep9io/8OGGczdMTKgm6rpqQiuSKAucVZHYQGadZ1NBqhiYqM8iFI2JkxVIZoJWEx3dB0+VYY2zr3jN9mgwYddI74VSeig2rY6veigVKSUarsPY9PAKH2o7KEgx8d7WL/6xGy4Zyqj9PGqibxutoRnxFoxEhq3BcwtHuWOkENCPRaVcDYEKbNFd9rd6ngU7OJnklDmlbnnqgwVFv49vCptNbowyHJq39QWLdh+BZsBDQ8kJ7rxDEwEElnxb26sxR2Km2FWjOZ4im3rlLoAPUK0u00rYTa5ZjuS6iawvyPF/RF2hEnGlGt5cHTotkV/bNbzNbIoVTK1Qk00whmvzMLFm7MnTMQ2B2n5NBojZj7nUu3Abie+n0vjWfRXHpxduNJiZbpWQQG9og35hnBi1u3HNQgJTgsLrKHfNlWWZGVSIpV29+nQqs+ac5GJ+QAuACbzq5PzjDBfOzDsjTLIeYCpV8lj4aZNHyRGvKQZvQ9nL30VGqfY3jNY8OuU/Huxj3OL3WTB9em4uqecNEsQ1Si1s4cXET+HlX9c7yD5zvM6K9ISzHhM2hmW1emftr31cuOeHPL7fF8O0REOlUquW/XlQZlVT3lEcTkx8LC40=
+
+addons:
+    firefox: latest
+
+python:
+    -   3.6
+
+before_install:
+    -   wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+    -   mkdir geckodriver
+    -   tar -xzf geckodriver-v0.24.0-linux64.tar.gz -C geckodriver
+    -   export PATH=$PATH:$PWD/geckodriver
+    -   geckodriver --version || exit 1
+
+install:
+    -   pip install beautifulsoup4 psutil selenium
+
+script:
+    -   python main.py -e $EMAIL -p $PASSWORD
